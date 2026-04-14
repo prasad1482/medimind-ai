@@ -1,0 +1,60 @@
+# ── Python ────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# ── Virtual environments ──────────────────────────────────
+venv/
+env/
+.venv/
+.env.venv/
+ENV/
+
+# ── Environment / Secrets ─────────────────────────────────
+.env
+*.env
+.env.*
+!.env.example
+
+# ── Data / Large files ────────────────────────────────────
+data/
+*.pdf
+*.csv
+*.parquet
+*.db
+*.sqlite
+
+# ── Model cache ───────────────────────────────────────────
+.cache/
+models/
+sentence_transformers/
+
+# ── IDE / Editor ─────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# ── Logs ─────────────────────────────────────────────────
+*.log
+logs/
+
+# ── Testing ───────────────────────────────────────────────
+.pytest_cache/
+.coverage
+htmlcov/
+
+# ── Artifacts (local only) ────────────────────────────────
+implementation_plan.md
+walkthrough.md

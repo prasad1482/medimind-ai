@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="MediMind AI — Professional AI-powered medical knowledge assistant using RAG architecture and advanced medical knowledge base." />
+  <title>MediMind AI — Medical Knowledge Assistant</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <!-- ═══ ANIMATED BACKGROUND ═══════════════════════════════ -->
+  <div class="bg-canvas" aria-hidden="true">
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+    <div class="bg-orb orb-3"></div>
+    <canvas id="particle-canvas"></canvas>
+  </div>
+
+  <!-- ═══ SIDEBAR ══════════════════════════════════════════════ -->
+  <aside class="sidebar" id="sidebar" role="navigation" aria-label="Medical Assistant Navigation">
+
+    <!-- Logo / Brand -->
+    <div class="sidebar-header">
+      <div class="logo">
+        <div class="logo-icon">
+          <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="44" height="44" rx="13" fill="url(#logoGrad)" />
+            <path d="M22 10v24M10 22h24" stroke="white" stroke-width="3.8" stroke-linecap="round" />
+            <defs>
+              <linearGradient id="logoGrad" x1="0" y1="0" x2="44" y2="44" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#00b4cc" />
+                <stop offset="1" stop-color="#1d4ed8" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div>
+          <h1 class="logo-title">MediMind<span>AI</span></h1>
+          <p class="logo-sub">Medical Knowledge Assistant</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- New Conversation -->
+    <button class="new-chat-btn" id="newChatBtn" aria-label="Start new conversation">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="12" y1="5" x2="12" y2="19" />
+        <line x1="5" y1="12" x2="19" y2="12" />
+      </svg>
+      New Conversation
+    </button>
+
+    <!-- Sidebar Nav -->
+    <nav class="sidebar-nav" aria-label="Topics">
+      <p class="nav-label">Medical Topics</p>
+      <ul class="capability-list" role="list">
+
+        <li class="cap-item" id="cap-disease" role="button" tabindex="0" aria-label="Ask about Disease and Symptoms"
+          data-query="What are the common symptoms of pneumonia and how is it treated?">
+          <div class="cap-icon-wrap">🔬</div>
+          <div class="cap-item-text">
+            <p class="cap-title">Disease & Symptoms</p>
+            <p class="cap-desc">Identify conditions</p>
+          </div>
+          <span class="cap-arrow">›</span>
+        </li>
+
+        <li class="cap-item" id="cap-meds" role="button" tabindex="0" aria-label="Ask about Medications"
+          data-query="What are common drug interactions and how do they affect treatment?">
+          <div class="cap-icon-wrap">💊</div>
+          <div class="cap-item-text">
+            <p class="cap-title">Medications</p>
+            <p class="cap-desc">Drug info & interactions</p>
+          </div>
+          <span class="cap-arrow">›</span>
+        </li>
+
+        <li class="cap-item" id="cap-anatomy" role="button" tabindex="0" aria-label="Ask about Anatomy and Physiology"
+          data-query="Explain how the cardiovascular system works and maintains blood pressure">
+          <div class="cap-icon-wrap">🧬</div>
+          <div class="cap-item-text">
+            <p class="cap-title">Anatomy & Physiology</p>
+            <p class="cap-desc">Body systems explained</p>
+          </div>
+          <span class="cap-arrow">›</span>
+        </li>
+
+        <li class="cap-item" id="cap-diagnosis" role="button" tabindex="0"
+          aria-label="Ask about Diagnosis and Treatment"
+          data-query="What are the diagnostic criteria and treatment options for type 2 diabetes?">
+          <div class="cap-icon-wrap">🩺</div>
+          <div class="cap-item-text">
+            <p class="cap-title">Diagnosis & Treatment</p>
+            <p class="cap-desc">Clinical knowledge base</p>
+          </div>
+          <span class="cap-arrow">›</span>
+        </li>
+
+        <li class="cap-item" id="cap-emergency" role="button" tabindex="0" aria-label="Ask about Emergency Medicine"
+          data-query="What are the warning signs of a heart attack and what immediate steps should be taken?">
+          <div class="cap-icon-wrap">🚨</div>
+          <div class="cap-item-text">
+            <p class="cap-title">Emergency Medicine</p>
+            <p class="cap-desc">Critical care & first aid</p>
+          </div>
+          <span class="cap-arrow">›</span>
+        </li>
+
+        <li class="cap-item" id="cap-nutrition" role="button" tabindex="0"
+          aria-label="Ask about Nutrition and Prevention"
+          data-query="What dietary and lifestyle changes help prevent cardiovascular disease?">
+          <div class="cap-icon-wrap">🥗</div>
+          <div class="cap-item-text">
+            <p class="cap-title">Nutrition & Prevention</p>
+            <p class="cap-desc">Preventive health care</p>
+          </div>
+          <span class="cap-arrow">›</span>
+        </li>
+
+      </ul>
+
+      <div class="nav-divider" aria-hidden="true"></div>
+      <p class="quick-label">Quick Queries</p>
+      <ul class="quick-list" role="list">
+
+        <li class="quick-item" role="button" tabindex="0"
+          data-query="Explain the pathophysiology of hypertension and its long-term complications">
+          <span class="quick-item-icon">🔴</span>
+          Hypertension & Complications
+        </li>
+
+        <li class="quick-item" role="button" tabindex="0"
+          data-query="How does the immune system fight bacterial infections?">
+          <span class="quick-item-icon">🛡️</span>
+          Immune System Defense
+        </li>
+
+        <li class="quick-item" role="button" tabindex="0"
+          data-query="Explain the mechanism of action of antibiotics and how antibiotic resistance develops">
+          <span class="quick-item-icon">⚗️</span>
+          Antibiotic Mechanisms
+        </li>
+
+        <li class="quick-item" role="button" tabindex="0"
+          data-query="What are the stages and treatment of chronic kidney disease?">
+          <span class="quick-item-icon">🫘</span>
+          Kidney Disease Stages
+        </li>
+
+      </ul>
+    </nav>
+
+    <!-- Footer -->
+    <div class="sidebar-footer">
+      <div class="model-badge">
+        <div class="model-dot"></div>
+        <span>Llama 3.3 70B via Groq</span>
+      </div>
+      <div class="db-badge">
+        <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2">
+          <ellipse cx="12" cy="5" rx="9" ry="3" />
+          <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
+          <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
+        </svg>
+        <span>Pinecone Vector Database</span>
+      </div>
+      <p class="disclaimer-text">⚠️ For educational purposes only. Not a substitute for professional medical advice.</p>
+    </div>
+  </aside>
+
+  <!-- ═══ MAIN CONTENT ══════════════════════════════════════ -->
+  <main class="main-content" id="mainContent" role="main">
+
+    <!-- Top Bar -->
+    <header class="topbar">
+      <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle Sidebar">
+        <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="12" x2="21" y2="12" />
+          <line x1="3" y1="6" x2="21" y2="6" />
+          <line x1="3" y1="18" x2="21" y2="18" />
+        </svg>
+      </button>
+      <div class="topbar-center">
+        <div class="status-indicator" id="statusIndicator" role="status" aria-live="polite">
+          <span class="status-dot" id="statusDot"></span>
+          <span id="statusText">Connecting…</span>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <div class="vector-count-badge" id="vectorCountBadge" title="Indexed medical knowledge vectors">
+          <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2">
+            <ellipse cx="12" cy="5" rx="9" ry="3" />
+            <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
+            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
+          </svg>
+          <span id="vectorCount">—</span> vectors
+        </div>
+      </div>
+    </header>
+
+    <!-- Chat Area -->
+    <div class="chat-container" id="chatContainer" role="log" aria-label="Chat messages" aria-live="polite">
+
+      <!-- Welcome Screen -->
+      <div class="welcome-screen" id="welcomeScreen">
+        <div class="welcome-hero">
+          <div class="hero-emblem" aria-hidden="true">
+            <div class="emblem-ring ring-1"></div>
+            <div class="emblem-ring ring-2"></div>
+            <div class="emblem-ring ring-3"></div>
+            <div class="emblem-core">
+              <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg" width="56" height="56">
+                <path d="M30 8v44M8 30h44" stroke="url(#crossGrad)" stroke-width="5" stroke-linecap="round" />
+                <defs>
+                  <linearGradient id="crossGrad" x1="8" y1="8" x2="52" y2="52" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#00b4cc" />
+                    <stop offset="1" stop-color="#1d4ed8" />
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
+          </div>
+          <h2 class="welcome-title">MediMind <span class="gradient-text">AI</span></h2>
+          <p class="welcome-subtitle">Your trusted medical knowledge companion — powered by a comprehensive medical
+            textbook and advanced RAG retrieval technology</p>
+        </div>
+
+        <div class="suggestion-grid" role="list" aria-label="Suggested questions">
+          <button class="suggestion-card" id="sugg-1" role="listitem"
+            data-query="What are the common symptoms of pneumonia and how is it treated?">
+            <span class="suggestion-icon" aria-hidden="true">🫁</span>
+            <p>Symptoms & treatment of pneumonia</p>
+          </button>
+          <button class="suggestion-card" id="sugg-2" role="listitem"
+            data-query="Explain the pathophysiology of type 2 diabetes mellitus">
+            <span class="suggestion-icon" aria-hidden="true">🩸</span>
+            <p>Pathophysiology of Type 2 Diabetes</p>
+          </button>
+          <button class="suggestion-card" id="sugg-3" role="listitem"
+            data-query="What are the warning signs of a heart attack?">
+            <span class="suggestion-icon" aria-hidden="true">❤️</span>
+            <p>Warning signs of a heart attack</p>
+          </button>
+          <button class="suggestion-card" id="sugg-4" role="listitem"
+            data-query="How does the immune system fight bacterial infections?">
+            <span class="suggestion-icon" aria-hidden="true">🛡️</span>
+            <p>How immune system fights bacteria</p>
+          </button>
+          <button class="suggestion-card" id="sugg-5" role="listitem"
+            data-query="What is hypertension and what are its long-term complications?">
+            <span class="suggestion-icon" aria-hidden="true">🔴</span>
+            <p>Hypertension and its complications</p>
+          </button>
+          <button class="suggestion-card" id="sugg-6" role="listitem"
+            data-query="Explain how antibiotics work and how antibiotic resistance develops">
+            <span class="suggestion-icon" aria-hidden="true">💊</span>
+            <p>Antibiotic mechanisms & resistance</p>
+          </button>
+        </div>
+      </div>
+
+      <!-- Messages List -->
+      <div class="messages-list" id="messagesList" role="list" aria-label="Conversation"></div>
+    </div>
+
+    <!-- Input Area -->
+    <footer class="input-area">
+      <div class="input-wrapper" id="inputWrapper">
+        <div class="input-box">
+          <textarea id="queryInput" class="query-textarea" placeholder="Ask any medical question…" rows="1"
+            maxlength="1000" aria-label="Medical question input" aria-multiline="true"></textarea>
+          <div class="input-controls">
+            <span class="char-count" id="charCount" aria-label="Character count">0 / 1000</span>
+            <button class="send-btn" id="sendBtn" aria-label="Send message" disabled>
+              <svg id="sendIcon" xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="22" y1="2" x2="11" y2="13" />
+                <polygon points="22 2 15 22 11 13 2 9 22 2" />
+              </svg>
+              <div class="loading-ring" id="loadingRing" hidden></div>
+            </button>
+          </div>
+        </div>
+      </div>
+      <p class="input-disclaimer">MediMind AI provides educational information only. Always consult a qualified
+        healthcare professional for personal medical decisions.</p>
+    </footer>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+
+</html>
